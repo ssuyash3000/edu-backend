@@ -7,14 +7,17 @@ import ejsLayouts from "express-ejs-layouts";
 import connectToMongoDB from "./src/config/mongodb.js";
 import { auth } from "./src/middleware/auth.middleware.js";
 import AdminController from "./src/controller/admin.controller.js";
-import loggerMiddleware from "./src/middleware/logger.middleware.js";
+import loggerMiddleware, { log } from "./src/middleware/logger.middleware.js";
 import { ApplicationError } from "./src/error-handler/applicationError.js";
-import { error, log } from "console";
+// import { error, log } from "console";
 
+import NoticeController from "./src/controller/notice.controller.js";
+import { uploadFile } from "./src/middleware/file-upload.middleware.js";
+import cors from "cors";
 const port = process.env.PORT || 3001;
 
 const server = express();
-
+server.use(cors());
 server.use(cookieParser());
 console.log(process.env.SecretKeyForSession);
 server.use(
@@ -80,6 +83,28 @@ server.post("/admin/login", (req, res) => {
     adminController.postLogin(req, res);
 });
 server.get("/admin/logout", adminController.logout);
+
+//////// Notice Related Routes ////////
+let noticeController = new NoticeController();
+
+server.get("/recent-notice-list", noticeController.getRecentNoticeList);
+
+server.get("/admin/getNoticeList", auth, noticeController.getNoticeList);
+server.post(
+    "/admin/delete-notice/:id/:start/:end/:path",
+    auth,
+    noticeController.deleteNotice
+);
+server.get("/admin/add-notice", auth, noticeController.getNoticeForm);
+server.post(
+    "/admin/add-notice",
+    auth,
+    uploadFile.single("noticeFile"),
+    noticeController.postNotice
+);
+// server.use(express.static("notice"));
+
+server.use(express.static("public"));
 server.use("/", (req, res) => {
     res.status(404).render("not-found", {
         errorMessage: "This path does not exists",
@@ -87,31 +112,8 @@ server.use("/", (req, res) => {
         userEmail: req.session.userEmail,
     });
 });
-//////// Notice Related Routes ////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 server.use(express.static("src/views"));
-server.use(express.static("public"));
+
 server.use(loggerMiddleware);
 
 server.listen(port, () => {
