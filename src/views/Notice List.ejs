@@ -1,0 +1,47 @@
+<%if(locals.lastVisit){%>
+<div class="alert alert-primary">
+    Your Last Visit was on : <%=locals.lastVisit%>
+</div>
+<%}%>
+<h1 class="mt-5 mb-4 header">notices</h1>
+
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col">Image</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% notices.forEach((notice)=>{%>
+        <tr>
+            <th><%=notice.id%></th>
+            <td><%=notice.name%></td>
+            <td><%=notice.descp%></td>
+            <td scope="col"><%=notice.price%></td>
+            <td>
+                <img width="170" src="<%=notice.imageUrl%>" />
+            </td>
+            <td>
+                <a
+                    href="/update-notice/<%= notice.id %>"
+                    class="btn btn-warning"
+                    >Update</a
+                >
+                <!-- <a href="/delete-notice/<%= notice.id %>" class="btn btn-danger"
+              >Delete</a> -->
+                <button
+                    class="btn btn-danger"
+                    onclick="deleteProd('<%= notice.id %>')"
+                >
+                    Delete notice
+                </button>
+            </td>
+        </tr>
+        <% })%>
+    </tbody>
+</table>

@@ -1,0 +1,18 @@
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            <% if(errorCode) { %>
+            <h1 class="display-1 fw-bold text-danger"><%= errorCode %></h1>
+            <% } else { %>
+            <h1 class="display-1 fw-bold text-danger">404</h1>
+            <% } %> <% if(errorMessage) { %>
+            <p class="lead text-muted"><%= errorMessage %></p>
+            <% } else { %>
+            <p class="lead text-muted">Oops! Page not found.</p>
+            <% } %>
+
+            <a href="/admin" class="btn btn-primary">Go to Admin Page</a>
+            <a href="/" class="btn btn-success">Go to Homepage</a>
+        </div>
+    </div>
+</div>
