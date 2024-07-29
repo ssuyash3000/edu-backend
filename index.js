@@ -14,6 +14,8 @@ import { ApplicationError } from "./src/error-handler/applicationError.js";
 import NoticeController from "./src/controller/notice.controller.js";
 import { uploadFile } from "./src/middleware/file-upload.middleware.js";
 import cors from "cors";
+import ResultController from "./src/controller/result.controller.js";
+import { uploadResultFile } from "./src/middleware/uploadResult.middleware.js";
 const port = process.env.PORT || 3001;
 
 const server = express();
@@ -104,6 +106,41 @@ server.post(
 );
 // server.use(express.static("notice"));
 
+////////////// Notice Related Feature ////////////////
+let resultController = new ResultController();
+server.get("/admin/upload-results", auth, (req, res, next) => {
+    res.status(200).render("Add Result");
+});
+server.post(
+    "/admin/upload-results",
+    auth,
+    uploadResultFile.single("resultFile"),
+    (req, res, next) => {
+        // res.render("Add Result");
+        resultController.uploadResults(req, res, next);
+    }
+);
+// server.get("/admin/view-result/:id", (req, res, next) => {
+//     resultController.getResultView(req, res, next);
+// });
+
+server.get("/admin/view-results", auth, (req, res, next) => {
+    resultController.viewResultAdmin(req, res, next);
+});
+
+server.post("/admin/delete-result/:id/:start/:end", auth, (req, res, next) => {
+    resultController.deleteResult(req, res, next);
+});
+
+server.get("/get-result/:id", (req, res, next) => {
+    resultController.getResultView(req, res, next);
+});
+server.get("/view-results", (req, res, next) => {
+    resultController.viewResults(req, res, next);
+    // res.render("Result List", {
+    //     results: [],
+    // });
+});
 server.use(express.static("public"));
 server.use("/", (req, res) => {
     res.status(404).render("not-found", {

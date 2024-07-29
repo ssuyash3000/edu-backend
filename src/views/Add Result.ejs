@@ -1,32 +1,41 @@
-<!-- views/add Result.ejs -->
-
-<h1 class="mt-5 mb-4">Add New Result</h1>
-<%if(errorMessage){%>
-<div class="alert alert-danger" role="alert"><%=errorMessage%></div>
-<%}%>
-
-<form action="/" method="post" enctype="multipart/form-data">
-  <div class="mb-3">
-    <label for="name" class="form-lable">Result Name</label>
-    <input type="text" class="form-control" id="name" name="name" required />
-  </div>
-  <div class="mb-3">
-    <label for="desc" class="form-lable">Result Description</label>
-    <textarea class="form-control" id="desc" name="desc" required></textarea>
-  </div>
-  <div class="mb-3">
-    <label for="price" class="form-lable">Price</label>
-    <input
-      type="number"
-      class="form-control"
-      id="price"
-      name="price"
-      required />
-  </div>
-  <div class="mb-3">
-    <label for="imageUrl" class="form-lable">Image</label>
-    <!-- <input type="url" class="form-control" id="imageUrl" name="imageUrl" /> -->
-    <input type="file" name="imageUrl" id="imageUrl" accept="images/*" />
-  </div>
-  <button type="submit" class="btn btn-primary">Add Result</button>
-</form>
+<div class="container">
+    <h2 class="mt-5">Upload Results</h2>
+    <form
+        action="/admin/upload-results"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+        <div class="form-group">
+            <label for="className">Class Name</label>
+            <input
+                type="text"
+                class="form-control"
+                id="className"
+                name="className"
+                required
+            />
+        </div>
+        <div class="form-group">
+            <label for="examName">Exam Name</label>
+            <input
+                type="text"
+                class="form-control"
+                id="examName"
+                name="examName"
+                required
+            />
+        </div>
+        <div class="form-group">
+            <label for="resultFile">Upload Excel File</label>
+            <input
+                type="file"
+                class="form-control-file"
+                id="resultFile"
+                name="resultFile"
+                accept=".xlsx, .xls"
+                required
+            />
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>

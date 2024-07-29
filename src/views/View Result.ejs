@@ -1,0 +1,37 @@
+<div class="container">
+    <h2 class="mt-5">
+        View Result for <%= result.className %> - <%= result.examName %>
+    </h2>
+    <form
+        action="/get-result/<%= result._id %>"
+        method="GET"
+        class="form-inline"
+    >
+        <div class="form-group mb-2">
+            <label for="rollNumber" class="sr-only">Roll Number</label>
+            <input
+                type="text"
+                class="form-control"
+                id="rollNumber"
+                name="rollNumber"
+                placeholder="Enter Roll Number"
+                required
+            />
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Submit</button>
+    </form>
+    <% if (studentResult) { %>
+    <div id="resultContainer" class="mt-4">
+        <h3>Result for Roll Number: <%= studentResult['Student Roll'] %></h3>
+        <p>Student Name: <%= studentResult['Student Name'] %></p>
+        <% Object.keys(studentResult).forEach(function(key) { %> <% if (key !==
+        'Student Roll' && key !== 'Student Name') { %>
+        <p><%= key %>: <%= studentResult[key] %></p>
+        <% } %> <% }); %>
+    </div>
+    <% } else if (typeof studentResult !== 'undefined') { %>
+    <div id="resultContainer" class="mt-4">
+        <p class="text-danger">Enter the roll number</p>
+    </div>
+    <% } %>
+</div>
