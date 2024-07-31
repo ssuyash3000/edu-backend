@@ -66,7 +66,10 @@ server.get("/admin", auth, (req, res) => {
     });
     // res.send("server is setup");
 });
-
+server.use(express.static("build"));
+server.get("/", (req, res) => {
+    res.render("build/index.html");
+});
 //admin password - uC=_^918;}f,
 const adminController = new AdminController();
 // server.get("/admin/register", (req, res) => {
@@ -89,7 +92,7 @@ server.get("/admin/logout", adminController.logout);
 //////// Notice Related Routes ////////
 let noticeController = new NoticeController();
 
-server.get("/recent-notice-list", noticeController.getRecentNoticeList);
+server.get("/api/recent-notice-list", noticeController.getRecentNoticeList);
 
 server.get("/admin/getNoticeList", auth, noticeController.getNoticeList);
 server.post(
@@ -106,7 +109,7 @@ server.post(
 );
 // server.use(express.static("notice"));
 
-////////////// Notice Related Feature ////////////////
+////////////// Result Related Feature ////////////////
 let resultController = new ResultController();
 server.get("/admin/upload-results", auth, (req, res, next) => {
     res.status(200).render("Add Result");
@@ -134,6 +137,12 @@ server.post("/admin/delete-result/:id/:start/:end", auth, (req, res, next) => {
 
 server.get("/get-result/:id", (req, res, next) => {
     resultController.getResultView(req, res, next);
+});
+server.get("/api/view-results", (req, res, next) => {
+    resultController.viewResultsAPI(req, res, next);
+    // res.render("Result List", {
+    //     results: [],
+    // });
 });
 server.get("/view-results", (req, res, next) => {
     resultController.viewResults(req, res, next);

@@ -48,6 +48,14 @@ export default class ResultController {
             next(err);
         }
     }
+    async viewResultsAPI(req, res, next) {
+        try {
+            let results = await this.resultRepository.viewResults();
+            res.status(200).json(results);
+        } catch (err) {
+            next(err);
+        }
+    }
     async viewResultAdmin(req, res, next) {
         try {
             const { start = 0, end = 10 } = req.query;
