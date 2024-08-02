@@ -166,3 +166,4 @@ server.listen(port, () => {
     connectToMongoDB();
     console.log(`Server has started at port ${port}`);
 });
+
